@@ -4,6 +4,9 @@
 This is the code I used for the Reference during my live presentation. The code is fairly commented
 now and the Library I wrote to hide Twitter and hack details is also included and viewable.
 
+The Library Code (tclib) was NOT done during the presentation, but it's source code is available if
+you are interested.
+
 ### Notes on Use:
 ---
 
