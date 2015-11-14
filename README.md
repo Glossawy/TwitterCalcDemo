@@ -23,13 +23,12 @@ manually fairly easily as well. Gradle will automatically handle building the pr
 the library a dependency of the main demo code.
 
 Doing this manually is easy with an IDE. So only Gradle is discussed here. For IDEs just make sure you have
-the twitter logo (twitter.png) in the project root directory (project working directory).
+the twitter logo (twitter.png) in the project root directory (project working directory).gr
 
 #### Using Gradle: 
-0. Install Gradle (Make sure it is added to your PATH variable)
 1. Clone repository
 2. Go to project directory in terminal
-3. run 'gradle build' and wait...
+3. run 'gradlew build' and wait...
 4. A 'build' directory should be made. Go to build -> libs
 4a. Verify a jar file and a twitter logo is there
 5. The jar file is executable, just execute it in java and go (java -jar in terminal)
