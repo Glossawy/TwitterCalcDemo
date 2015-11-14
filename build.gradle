@@ -11,6 +11,33 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    enabled = false
+    manifest {
+        attributes 'Main-Class': 'us.matthewcrocco.twittercalc.TwitterCalculator'
+    }
+}
+
+task twitterRequirements(type: Copy) {
+    from 'twitter.png'
+    into 'build/libs'
+}
+
+task fullJar(type: Jar, dependsOn: ['twitterRequirements']) {
+    manifest.from jar.manifest
+    classifier = 'all'
+
+    from {configurations.compile.collect{ it.isDirectory() ? it : zipTree(it)}}
+
+    with jar
+}
+
+artifacts {
+    // We only want the jar-with-dependencies, ignore the default artifact
+//    jar.enabled = false
+    archives fullJar
+}
+
 dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.1'
     compile project(':TwitterCalcLib')
