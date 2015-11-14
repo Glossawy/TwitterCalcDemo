@@ -1,15 +1,3 @@
-/*
-    TwitterButton.java
-    
-    Version:
-        $Id$
-    
-    Revisions:
-        $Log$
-        
-    $Author$
- */
-
 package us.matthewcrocco.tclib;
 
 import javax.swing.JButton;

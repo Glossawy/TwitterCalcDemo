@@ -1,15 +1,3 @@
-/*
-    TwitterCalculator.java
-    
-    Version:
-        $Id$
-    
-    Revisions:
-        $Log$
-        
-    $Author$
- */
-
 package us.matthewcrocco.twittercalc;
 
 import us.matthewcrocco.tclib.LookAndFeels;

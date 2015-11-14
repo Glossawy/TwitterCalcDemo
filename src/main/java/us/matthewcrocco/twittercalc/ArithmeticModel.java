@@ -1,15 +1,3 @@
-/*
-    ArithmeticModel.java
-    
-    Version:
-        $Id$
-    
-    Revisions:
-        $Log$
-        
-    $Author$
- */
-
 package us.matthewcrocco.twittercalc;
 
 import javax.swing.JButton;
