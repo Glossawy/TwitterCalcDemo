@@ -1,0 +1,14 @@
+group 'us.matthewcrocco.demo'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.twitter4j:twitter4j-core:4.0.1'
+}
