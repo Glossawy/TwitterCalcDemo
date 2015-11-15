@@ -15,12 +15,13 @@ you are interested.
 - _**The Twitter logo must be in the root of the working directory!**_
 
 
-### Getting Started
+### Getting Started _(Requires Java 8+)_
 ---
 
 This code manages dependencies using [Gradle](http://gradle.org/) though you can also setup the environment
 manually fairly easily as well. Gradle will automatically handle building the project including making
-the library a dependency of the main demo code.
+the library a dependency of the main demo code. To make life easier on you, I provided the gradle wrapper so
+you don't need to install it (though it is a great build system).
 
 Doing this manually is easy with an IDE. So only Gradle is discussed here. For IDEs just make sure you have
 the twitter logo (twitter.png) in the project root directory (project working directory).gr

@@ -49,30 +49,32 @@ public class CalculatorWindow extends JFrame {
             isDispatchThread() is also useful, it allows you to check if
             Thread.currentThread() is the AWT Event Thread.
          */
-        EventQueue.invokeLater(() -> {
-            // EXIT_ON_CLOSE - Immediately Exit Program when Closed
-            // DISPOSE_ON_CLOSE - Dispose only this window
-            // HIDE_ON_CLOSE - Make Invisible but Do Not Dispose on Close
-            /// DO_NOTHING_ON_CLOSE - Closing does nothing
-            /*
-                Typically you want to DISPOSE_ON_CLOSE. EXIT_ON_CLOSE will
-                force the JVM to exit, even if the Main Thread or other important
-                threads aren't finished. When all windows are disposed the AWT Event Thread
-                is finished and the program can exit normally when all other threads finish
-                as well.
-             */
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                // EXIT_ON_CLOSE - Immediately Exit Program when Closed
+                // DISPOSE_ON_CLOSE - Dispose only this window
+                // HIDE_ON_CLOSE - Make Invisible but Do Not Dispose on Close
+                /// DO_NOTHING_ON_CLOSE - Closing does nothing
+                /*
+                    Typically you want to DISPOSE_ON_CLOSE. EXIT_ON_CLOSE will
+                    force the JVM to exit, even if the Main Thread or other important
+                    threads aren't finished. When all windows are disposed the AWT Event Thread
+                    is finished and the program can exit normally when all other threads finish
+                    as well.
+                 */
+                setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-            init();
+                init();
 
-            setSize(400, 300);
-            setResizable(false);
-            // setting this to null places the window in the cetner of the screen
-            setLocationRelativeTo(null);
+                setSize(400, 300);
+                setResizable(false);
+                // setting this to null places the window in the cetner of the screen
+                setLocationRelativeTo(null);
 
-            // Is equivalent to show() [show() calls setVisible(true)] but
-            // not deprecated
-            setVisible(true);
+                // Is equivalent to show() [show() calls setVisible(true)] but
+                // not deprecated
+                setVisible(true);
+            }
         });
     }
 
@@ -90,20 +92,20 @@ public class CalculatorWindow extends JFrame {
         cont.setLayout(new BorderLayout());
 
         // Top Pane will fill all the space with a button on the 'east' side
-        JPanel topPane = new JPanel(new BorderLayout());
+        final JPanel topPane = new JPanel(new BorderLayout());
         // Buttons are ina 4x4 grid
-        JPanel middlePane = new JPanel(new GridLayout(4, 4, 5, 5));
+        final JPanel middlePane = new JPanel(new GridLayout(4, 4, 5, 5));
         // Just for fun. Copyright statement and a JSpinner
         // flowing from Right to Left
-        JPanel bottomPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        final JPanel bottomPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         cont.add(topPane, BorderLayout.NORTH);
         cont.add(middlePane, BorderLayout.CENTER);
         cont.add(bottomPane, BorderLayout.SOUTH);
 
         // Top Section
-        JTextField input = new JTextField("");
-        JButton twitButton = new TwitterButton();
+        final JTextField input = new JTextField("");
+        final JButton twitButton = new TwitterButton();
         topPane.add(input, BorderLayout.CENTER);
         topPane.add(twitButton, BorderLayout.EAST);
 
@@ -113,7 +115,7 @@ public class CalculatorWindow extends JFrame {
 
         // Using a Larger Font makes the Input Field larger.
         // 20 works in this case.
-        Font font = new Font(Font.MONOSPACED, Font.PLAIN, 20);
+        final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 20);
         input.setFont(font);
 
         // Making a field uneditable will normally gray-out the background.
@@ -195,7 +197,7 @@ public class CalculatorWindow extends JFrame {
         // Certain components like Spinner need a backing Model that
         // can be manipulated and holds it's data.
         // In this case it's just all color names.
-        JSpinner colorSpinner = new JSpinner(new SpinnerListModel(SwingUtils.getAllColors()));
+        final JSpinner colorSpinner = new JSpinner(new SpinnerListModel(SwingUtils.getAllColors()));
 
         // HTML JLabel for Copyright
         bottomPane.add(new JLabel("<html><b>Copyright (c) 2015</b> - I Didn't Know What to Put Here...</html>"));

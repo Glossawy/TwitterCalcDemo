@@ -188,7 +188,7 @@ public class ArithmeticModel {
      * @param value Value to append when pressed
      * @return Number ActionListener
      */
-    public ActionListener numberAction(final JTextComponent comp, int value) {
+    public ActionListener numberAction(final JTextComponent comp, final int value) {
         return new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 String text;

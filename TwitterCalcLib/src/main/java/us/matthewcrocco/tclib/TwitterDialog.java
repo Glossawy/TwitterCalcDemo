@@ -22,6 +22,7 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -62,18 +63,20 @@ public class TwitterDialog extends JDialog {
         // Setting a parent means if the parent closes, this closes
         super(parent);
 
-        EventQueue.invokeLater(() -> {
-            init();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                init();
 
-            // Could porbably also Hide in this case if we override
-            // default hide behavior.
-            setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            setTitle(String.format("Tweeting as: %s (@%s)", DemoConstants.getTwitterName(), DemoConstants.getTwitterHandle()));
-            setModal(true);
+                // Could porbably also Hide in this case if we override
+                // default hide behavior.
+                setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                setTitle(String.format("Tweeting as: %s (@%s)", DemoConstants.getTwitterName(), DemoConstants.getTwitterHandle()));
+                setModal(true);
 
-            setSize(400, 150);
-            setLocationRelativeTo(null);
-            setVisible(true);
+                setSize(400, 150);
+                setLocationRelativeTo(null);
+                setVisible(true);
+            }
         });
     }
 
@@ -92,8 +95,8 @@ public class TwitterDialog extends JDialog {
 
         // Input
         final UndoManager manager = new UndoManager();
-        JTextArea statusArea = new JTextArea("Hey! I did Maths!");
-        JScrollPane statusScrollPane = new JScrollPane(statusArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        final JTextArea statusArea = new JTextArea("Hey! I did Maths!");
+        final JScrollPane statusScrollPane = new JScrollPane(statusArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         inputPanel.add(statusScrollPane, BorderLayout.CENTER);
 
         statusArea.setDocument(new TextLimitDocument(140));
@@ -116,51 +119,57 @@ public class TwitterDialog extends JDialog {
         });
 
         // Button Panel
-        JButton submitButton = new JButton("Submit");
-        JButton cancelbutton = new JButton("Cancel");
-        JButton clearFeedButton = new JButton("Clear Feed");
+        final JButton submitButton = new JButton("Submit");
+        final JButton cancelbutton = new JButton("Cancel");
+        final JButton clearFeedButton = new JButton("Clear Feed");
 
-        submitButton.addActionListener((e) -> {
-            StatusUpdate update = new StatusUpdate(statusArea.getText());
-            boolean attempt = true;
-            while (attempt) {
-                URI twitterUri = null;
-                try {
-                    twitter.tweets().updateStatus(update);
-
+        submitButton.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(final ActionEvent e) {
+                StatusUpdate update = new StatusUpdate(statusArea.getText());
+                boolean attempt = true;
+                while (attempt) {
+                    URI twitterUri = null;
                     try {
-                        twitterUri = new URL(DemoConstants.TWITTER_URL).toURI();
-                    } catch (MalformedURLException | URISyntaxException exception) {
-                        exception.printStackTrace();
-                    }
+                        twitter.tweets().updateStatus(update);
 
-                    if (twitterUri != null && Desktop.isDesktopSupported()) {
-                        int choice = JOptionPane.showConfirmDialog(TwitterDialog.this, "Twitter Status Update Succeeded! Go to twitter? (Using Default Browser!)", "Twitter Success", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-                        if (choice == JOptionPane.YES_OPTION) {
-                            try {
-                                Desktop.getDesktop().browse(twitterUri);
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
+                        try {
+                            twitterUri = new URL(DemoConstants.TWITTER_URL).toURI();
+                        } catch (MalformedURLException | URISyntaxException exception) {
+                            exception.printStackTrace();
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(TwitterDialog.this, "Twitter Status Update Succeeded! Find it at: " + DemoConstants.TWITTER_URL + "!", "Twitter Success", JOptionPane.INFORMATION_MESSAGE);
-                    }
 
-                    statusArea.setText("");
-                    attempt = false;
-                } catch (TwitterException exception) {
-                    exception.printStackTrace();
+                        if (twitterUri != null && Desktop.isDesktopSupported()) {
+                            int choice = JOptionPane.showConfirmDialog(TwitterDialog.this, "Twitter Status Update Succeeded! Go to twitter? (Using Default Browser!)", "Twitter Success", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                    int choice = JOptionPane.showConfirmDialog(TwitterDialog.this, "Twitter Status Update Failed! Retry?", "Twitter Failure", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
-                    if (choice == JOptionPane.NO_OPTION)
+                            if (choice == JOptionPane.YES_OPTION) {
+                                try {
+                                    Desktop.getDesktop().browse(twitterUri);
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(TwitterDialog.this, "Twitter Status Update Succeeded! Find it at: " + DemoConstants.TWITTER_URL + "!", "Twitter Success", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                        statusArea.setText("");
                         attempt = false;
+                    } catch (TwitterException exception) {
+                        exception.printStackTrace();
+
+                        int choice = JOptionPane.showConfirmDialog(TwitterDialog.this, "Twitter Status Update Failed! Retry?", "Twitter Failure", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                        if (choice == JOptionPane.NO_OPTION)
+                            attempt = false;
+                    }
                 }
             }
         });
 
-        cancelbutton.addActionListener((e) -> TwitterDialog.this.dispose());
+        cancelbutton.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(final ActionEvent e) {
+                TwitterDialog.this.dispose();
+            }
+        });
 
         buttonPanel.add(cancelbutton);
         buttonPanel.add(clearFeedButton);
