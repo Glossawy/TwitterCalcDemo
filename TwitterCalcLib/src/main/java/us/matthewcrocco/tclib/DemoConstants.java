@@ -7,9 +7,9 @@ import twitter4j.conf.ConfigurationBuilder;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -39,22 +39,18 @@ public final class DemoConstants {
     static {
         try {
             // Get Twitter Image in the root directory and scale it to 40 pixels
-            BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get("twitter.png")));
-            Image tmp = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-            BufferedImage fImg = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage raw = ImageIO.read(Files.newInputStream(Paths.get("twitter.png")));
+            Image iconImage = raw.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
-            Graphics2D g2d = fImg.createGraphics();
-            g2d.drawImage(tmp, 0, 0, null);
-            g2d.dispose();
-
-            TWITTER_ICON = new ImageIcon(fImg);
-        } catch (Exception e) {
+            TWITTER_ICON = new ImageIcon(iconImage);
+        } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
 
         // Initialize Twitter API object
         TwitterFactory tFactory;
 
+        // Hardcoded Authentication for RITCS Calc Demo Bot
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setOAuthConsumerKey("3Vw9YAnJtzEYGK1VDaxpFNFpp");
         cb.setOAuthConsumerSecret("oYyjieR88uBkWKB72XA8gikn6887EqIqWdO9Fc3rf8TrCnOZPY");
