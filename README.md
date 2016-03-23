@@ -34,13 +34,6 @@ the twitter logo (twitter.png) in the project root directory (project working di
 5. Verify a jar file and a twitter logo is there
 6. The jar file is executable, just execute it in java and go (java -jar in terminal)
 
-### Plagiarism
----
-
-- _**Please do not plagiarize, you only risk putting yourself in a bad position and potentially myself**_
-- _**Leading from point one, do not simple copy and paste, contact me for help if you really need it**_
-- _**This is meant to be a learning tool! DO NOT ABUSE IT!**_
-
 #### Copyright
 ---
 
